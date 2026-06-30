@@ -1,0 +1,22 @@
+PRAIRIE LABS GENERAL USE SHELL TREE v1.1.0
+
+Root/
+  README.txt
+  Hooks.txt
+  Browser_Drop_Handler.txt
+  SHELL_TREE.txt
+  Layer_1_Installer/
+    Installer.txt
+    Layer_2_Preload/
+      Metadata.txt
+      Map.txt
+      Layer_3_Payload/
+        README_PAYLOAD.txt
+
+Rule: Payload begins at Layer_3_Payload.
+Rule: Browser-drop mode sheds local install behavior and runs the declared payload directly.
+Rule: No app, agent, or product manual is bundled in the shell template.
+Rule: App behavior belongs in the payload.
+Rule: After local install, route from installed copy only.
+Rule: Reinstall/update preserves saves, projects, exports, and user-created .txt files.
+Rule: After app entry point appears, shell becomes silent unless asked.

@@ -1,0 +1,80 @@
+PRAIRIE PACKAGE MAP
+Schema: Prairie Nested Layered Harness Map v1.1.0
+Status: app-specific routing map
+
+PURPOSE
+Map declares where the app is and how it opens.
+Metadata names the package.
+Map routes the package.
+
+PACKAGE ROOT
+Root/
+
+STANDARD FILES
+HOOKS: Root/Hooks.txt
+README: Root/README.txt
+BROWSER_DROP_HANDLER: Root/Browser_Drop_Handler.txt
+INSTALLER: Root/Layer_1_Installer/Installer.txt
+METADATA: Root/Layer_1_Installer/Layer_2_Preload/Metadata.txt
+MAP: Root/Layer_1_Installer/Layer_2_Preload/Map.txt
+PAYLOAD_ROOT: Root/Layer_1_Installer/Layer_2_Preload/Layer_3_Payload/
+
+PAYLOAD DECLARATION
+ENTRY_FILE: Root/Layer_1_Installer/Layer_2_Preload/Layer_3_Payload/Pleb_Life.txt
+ENTRY_POINT: /ui/title_screen.txt
+ENTRY_ACTION: render_title_screen_immediately
+APP_MAIN_MENU: /ui/title_screen.txt
+HOT_RESTART: start(run)
+
+PAYLOAD FILES
+- Root/Layer_1_Installer/Layer_2_Preload/Layer_3_Payload/README_PAYLOAD.txt
+- Root/Layer_1_Installer/Layer_2_Preload/Layer_3_Payload/Pleb_Life.txt
+
+LOCAL HARNESS ROUTING
+1. User says Inspect latest download.
+2. Hooks identify latest Prairie Labs ZIP.
+3. Installer waits for install.
+4. User says install.
+5. Installer creates or reuses Desktop/Prairie/Pleb Life.
+6. Installer copies package contents.
+7. Installer reads Metadata and this Map.
+8. Installer loads ENTRY_FILE.
+9. Installer renders ENTRY_POINT immediately.
+10. After ENTRY_POINT appears, shell becomes silent unless explicitly asked.
+
+BROWSER DROP ROUTING
+1. User uploads, drops, or pastes package or app text.
+2. Browser_Drop_Handler prevents fake filesystem operations.
+3. Metadata and Map are read as routing instructions only.
+4. ENTRY_FILE is loaded if visible.
+5. ENTRY_POINT is rendered directly.
+6. No install command is required in browser-drop mode.
+7. Do not display package scaffolding after the game title screen appears.
+
+ENTRY POINT RULES
+ENTRY_POINT is the Pleb Life title screen and game main menu.
+Installing, opening, running, booting, or browser-dropping this package must show
+the title screen immediately and must not ask for start(run) first.
+
+STERILITY RULES
+The payload is source-heavy but runtime-sterile.
+Do not echo shell files, source text, patch notes, directory trees, manifests,
+metadata, internal engine notes, hidden state, internal tags, or unresolved
+placeholders during gameplay.
+Only the active rendered game screen belongs in user-visible runtime output.
+
+FAILURE RULES
+If ENTRY_FILE is missing in local harness mode, installation fails with missing
+payload file: Pleb_Life.txt.
+If ENTRY_FILE is not visible in browser-drop mode, say the payload file is
+missing and ask for the app text or full package content.
+If ENTRY_POINT is missing inside ENTRY_FILE, load ENTRY_FILE and render the
+clearest available first screen titled P L E B   L I F E.
+If Metadata and Map disagree, Map controls routing and Metadata controls identity.
+
+APP SAVE ROUTING
+This package does not declare persistent saves.
+Preserve any user-created saves folder during reinstall because the shell
+standard preserves user-created folders, but Pleb Life does not require one.
+
+END MAP

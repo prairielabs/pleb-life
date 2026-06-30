@@ -1,0 +1,53 @@
+PRAIRIE PACKAGE METADATA
+Schema: Prairie Nested Layered Harness Metadata v1.1.0
+Status: app-specific preload metadata
+
+PURPOSE
+Metadata declares what this package is.
+It is read after installation begins and before the payload is loaded.
+It orients the harness without depending on a conventional runtime.
+
+PACKAGE VALUES
+APP_NAME: Pleb Life
+APP_FOLDER_NAME: Pleb Life
+APP_SLUG: pleb-life
+VERSION: v1.8.2-COMMERCIAL
+PUBLISHER: Prairie Labs, Inc.
+PACKAGE_STANDARD: Prairie General Use Shell v1.1.0
+PACKAGE_TYPE: game
+PRICE: commercial / storefront-controlled
+INSTALL_ROOT: Desktop/Prairie
+INSTALL_TARGET: Desktop/Prairie/Pleb Life
+ENTRY_POLICY: install_then_render_declared_entry_point_or_browser_drop_direct_run
+PAYLOAD_REQUIRED: yes
+NETWORK_REQUIRED: no
+USER_INSTALL_COMMAND: install
+USER_INSPECTION_COMMAND: Inspect latest download
+BROWSER_DROP_SUPPORTED: yes
+BROWSER_DROP_POLICY: shed_shell_and_run_declared_payload_directly
+LICENSE: Commercial proprietary Prairie Labs payload
+PRIMARY_PAYLOAD: Root/Layer_1_Installer/Layer_2_Preload/Layer_3_Payload/Pleb_Life.txt
+PRIMARY_AGENT: none
+NESTED_LAYERING: true
+LAYER_1_PATH: Root/Layer_1_Installer/
+LAYER_2_PATH: Root/Layer_1_Installer/Layer_2_Preload/
+LAYER_3_PATH: Root/Layer_1_Installer/Layer_2_Preload/Layer_3_Payload/
+
+FIRST SCREEN LOCKS
+FIRST_SCREEN: /ui/title_screen.txt
+FIRST_SCREEN_BEHAVIOR: render Pleb Life title screen and main menu immediately
+INPUT_COMPATIBILITY: exact_numeric_choices_1_2_3_and_start_run_hot_restart
+SAVE_FOLDER_LOCAL_HARNESS: none
+SAVE_BEHAVIOR_BROWSER_DROP: none
+LOAD_GAME_BEHAVIOR_LOCAL_HARNESS: none
+LOAD_GAME_BEHAVIOR_BROWSER_DROP: none
+
+RUNTIME OUTPUT LOCKS
+ON_INSTALL_OPEN_RUN_BOOT: render_entry_file_title_screen_only
+GAMEPLAY_OUTPUT: one_fenced_monospace_screen_per_response
+SOURCE_ECHO_ALLOWED: no
+DIRECTORY_ECHO_ALLOWED_AFTER_ENTRY: no
+HIDDEN_STATE_VISIBLE: no
+UNRESOLVED_PLACEHOLDERS_VISIBLE: no
+
+END METADATA

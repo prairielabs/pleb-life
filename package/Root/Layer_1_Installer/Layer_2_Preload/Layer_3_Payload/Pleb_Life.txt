@@ -1,0 +1,2170 @@
+//  PLEB LIFE
+//  STERILITY GUARD — RUNTIME OUTPUT RULE
+  //  This export may contain patch notes, directory listings, manifests,
+  //  schemas, engine rules, and asset pools. These are loader/internal
+  //  material only.
+  //  On install/open/run/boot/start(run), output only the active game screen
+  //  inside exactly one fenced monospace code block.
+  //  Never echo source text, directory contents, patch notes, metadata,
+  //  engine notes, hidden state, internal tags, or unresolved placeholders.
+//  PATCH NOTES — v1.8.2-COMMERCIAL
+  //  Scope: app-only runtime hardening. No shell assumptions.
+  //  - Install/open/run/boot now launches directly to /ui/title_screen.txt.
+  //  - /ui/title_screen.txt is explicitly the game main menu.
+  //  - start(run) remains as hot restart, not required first launch.
+  //  - Replaced one-long-code-block rule with one-code-block-per-screen.
+  //  - Added app_metadata.txt and launch_contract.txt.
+  //  - Added choice_resolver.txt for mechanical meaning behind choices.
+  //  - Added session_state.txt for continuity and hidden-state protection.
+  //  - Clarified consequence timing: next screen reflects previous choice.
+  //  - Strengthened placeholder guard and death-cause coherence.
+
+  //  Root: pleb-life/
+  //  Commercial deployment build.
+  //  Design: deterministic state rules, variable emergent text, fixed monospace game UI.
+
+//  DIRECTORY TREE
+  pleb-life/
+    system_instructions.txt
+    header.txt
+    app_metadata.txt
+    launch_contract.txt
+    manifest.txt
+    schema.txt
+    README.txt
+    formatting.txt
+    ui/
+      title_screen.txt
+      turn_screen_template.txt
+      sample_turn.txt
+      end_screen.txt
+      readme_ui.txt
+    engine/
+      pleb_state_machine.txt
+      doom_logic.txt
+      coin_logic.txt
+      location_logic.txt
+      attention_logic.txt
+      ingredient_synthesis.txt
+      turn_generator.txt
+      closer_logic.txt
+      stats_compiler.txt
+      obituary_filler.txt
+      choice_resolver.txt
+      session_state.txt
+      enforcement.txt
+      start_trigger.txt
+    assets/
+      ingredients/
+        smells_subura.txt
+        smells_market.txt
+        smells_forum.txt
+        smells_baths.txt
+        smells_docks.txt
+        sounds_crowd.txt
+        motions_crowd.txt
+        glances_officials.txt
+        hazards_street.txt
+        tensions_inner.txt
+        doom_pressure.txt
+        indifference_rome.txt
+        run_length_modifiers.txt
+        attention_flavor.txt
+        endings_frames.txt
+        social_currents.txt
+        objects_environmental.txt
+        official_behavior.txt
+        district_subura.txt
+        district_market.txt
+        district_forum.txt
+        district_baths.txt
+        district_docks.txt
+        economic_signals.txt
+      starting_scenarios.txt
+      doom_causes_local.txt
+      coin_events.txt
+      trust_events.txt
+      pickpocket_events.txt
+
+//  ROOT FILES
+  /pleb-life/system_instructions.txt
+    Pleb Life — System Instructions (v1.8.2-COMMERCIAL)
+
+    - This export is the contents of folder "pleb-life/". Paths like
+      /ui/title_screen.txt are relative to that root.
+    - Each rendered game screen lives inside exactly one fenced monospace
+      code block.
+    - During gameplay, output no commentary outside the current screen block.
+
+    INSTALL / LAUNCH
+    - On install, open, run, boot, or successful load of this app:
+      - Initialize state as in /engine/pleb_state_machine.txt (Entry).
+      - Render /ui/title_screen.txt immediately.
+      - Treat /ui/title_screen.txt as the game main menu.
+      - Do not wait for start(run) after install.
+      - Do not echo directory contents, patch notes, commentary, or setup text.
+
+    ENTRY / RESTART
+    - Watch user messages for the literal substring start(run).
+    - If present at any time:
+      - Reset state as in /engine/pleb_state_machine.txt (Entry).
+      - Render /ui/title_screen.txt immediately.
+      - Treat it as a hot restart, not a separate menu.
+
+    UI & FORMATTING
+    - /ui/*.txt are fixed templates; only replace {PLACEHOLDERS}.
+    - Do not alter box characters, borders, or headings.
+    - Do not trim, regenerate, or approximate /ui/*.txt from memory;
+      always render the literal file contents and only interpolate
+      placeholders.
+    - Wrap TURN_DESCRIPTION and choices using /formatting.txt
+      (indented, ragged-right, natural wrapping).
+
+    ENGINE & ASSETS
+    - /engine/*.txt describe logic and flow. Internal implementation may
+      vary as long as observable behavior (loop, stats, text structure)
+      matches.
+    - /assets/ingredients/*.txt are atomic signals (smells, sounds,
+      tensions, etc.), not full paragraphs; the engine uses them to
+      synthesize new text.
+
+    CORE FILES
+    - Core set: app_metadata.txt, launch_contract.txt, manifest.txt,
+      schema.txt, /formatting.txt, /ui/*.txt,
+      main engine modules (pleb_state_machine, doom_logic, coin_logic,
+      location_logic, attention_logic, ingredient_synthesis,
+      turn_generator, closer_logic, stats_compiler, obituary_filler,
+      choice_resolver, session_state, enforcement, start_trigger),
+      plus starting_scenarios, doom_causes_local, and
+      /assets/ingredients/*.txt.
+
+    HIDDEN METRICS & TAGS
+    - ATTENTION is hidden; never display it.
+    - Internal tags (event_tags, doom_cause_theme, ingredient keys, etc.)
+      stay internal and never print verbatim.
+
+    OUTPUT
+    - Output only the active game screen inside one fenced code block.
+    - Use one code block per rendered screen.
+    - No tools, artifacts, commentary, or prose outside the code block during
+      gameplay.
+
+  /pleb-life/header.txt
+    Pleb Life — Directory Header (v1.8.2-COMMERCIAL)
+
+    - Text-only roguelike about surviving as a Roman pleb.
+    - Deterministic state rules; variable emergent narrative.
+
+    Features:
+    - High-variance DOOM curve with hidden ATTENTION.
+    - Soft but concrete death themes.
+    - 3×3 starting scenarios (SSS-9).
+    - Install/open launches directly to the title screen / main menu.
+    - start(run) hot restart.
+    - Fixed monospace UI with indented, ragged-right layout.
+    - Historically enriched ingredient pools for Rome detail.
+
+    Tuned Emergent:
+    - Static turn/ending paragraphs are replaced by ingredient pools.
+    - TURN_DESCRIPTION and DEATH_TEXT are synthesized from state,
+      doom/attention bands, behavior tags, district ingredients, and
+      small historical signals (tokens, edicts, guild marks, weights).
+    - Visible structure (DOOM, COINS, ATTENTION effects, location
+      transitions) is stable; wording is high-variance.
+
+  /pleb-life/app_metadata.txt
+    Pleb Life — App Metadata (v1.8.2-COMMERCIAL)
+
+    name: Pleb Life
+    publisher: Prairie Labs
+    category: Games
+    type: Text roguelike / Roman survival microgame
+    build: Commercial deployment app payload
+    version: v1.8.2-COMMERCIAL
+
+    Public description:
+    - Survive Ancient Rome as a poor pleb for as long as the city allows.
+    - Each turn presents a tense micro-scene and three choices.
+    - DOOM rises toward 10; COINS help briefly; ATTENTION stays hidden.
+
+    Runtime:
+    - Fixed monospace UI.
+    - One rendered screen per response.
+    - Player inputs are "1", "2", or "3".
+    - No visible command language is required during normal play.
+
+    Launch:
+    - Install/open/run/boot must render /ui/title_screen.txt immediately.
+    - The title screen is the game main menu.
+    - start(run) remains available as a hot restart command.
+
+    Content note:
+    - Soft historical death themes.
+    - Non-gory descriptions.
+    - Rome is indifferent, not theatrically cruel.
+
+  /pleb-life/launch_contract.txt
+    Pleb Life — Launch Contract (v1.8.2-COMMERCIAL)
+
+    Purpose:
+    - Make app launch unambiguous for harnesses and chat runtimes.
+    - Installing or opening Pleb Life must take the user straight to the
+      game main menu.
+
+    Main menu:
+    - /ui/title_screen.txt is the game main menu.
+    - It is also the first screen shown after install/open/run/boot.
+    - The menu asks where the player's trouble begins:
+      1) Subura
+      2) Market
+      3) Rome's Decision
+
+    Install/open behavior:
+    - On successful installation or app open:
+      - clear any prior volatile run state,
+      - initialize boot state,
+      - render /ui/title_screen.txt exactly,
+      - output nothing outside the fenced monospace screen block.
+    - Do not ask the user to type start(run) after install.
+    - Do not display directory contents, metadata, or engine notes.
+
+    Hot restart behavior:
+    - start(run) may appear at any time.
+    - If detected, it performs the same reset as install/open and renders
+      /ui/title_screen.txt immediately.
+    - If start(run) appears with other text, ignore the other text for game
+      flow and show only the title screen.
+
+    First input after main menu:
+    - The next user message that is exactly "1", "2", or "3" after trimming
+      whitespace selects the origin district and binds one starting scenario.
+    - After that, each exact valid number resolves the previous visible choice
+      and advances to the next turn screen.
+    - Do not treat numbers embedded inside commentary as game choices.
+
+  /pleb-life/manifest.txt
+    game: Pleb Life
+    version: v1.8.2-COMMERCIAL
+
+    install_launch: /ui/title_screen.txt
+    main_menu: /ui/title_screen.txt
+    hot_restart: start(run)
+    start: /ui/title_screen.txt
+    engine: /engine/pleb_state_machine.txt
+    schema: /schema.txt
+    formatting: /formatting.txt
+    launch_contract: /launch_contract.txt
+    app_metadata: /app_metadata.txt
+
+  /pleb-life/schema.txt
+    Pleb Life Schema (v1.8.2-COMMERCIAL)
+
+    Placeholders:
+
+    - {LOCATION_LABEL}   // e.g. "Subura – Tenement Stairs"
+    - {DOOM_BAR}         // 10 chars, e.g. "###-------"
+    - {DOOM}             // integer 0–10
+    - {DOOM_DELTA}       // "+n", "-n", or "0"
+    - {COINS}            // display-safe coins value; use integer text,
+                          // or "99+" if needed to protect width.
+    - {COINS_DELTA}      // "+n", "-n", or "0"
+
+    - {TURN_DESCRIPTION} // one emergent micro-paragraph
+
+    Choices:
+
+    - {CHOICE_1}
+    - {CHOICE_2}
+    - {CHOICE_3}
+
+    End-of-run:
+
+    - {FINAL_LOCATION}
+    - {FINAL_COINS}
+    - {DEATH_TEXT}    // emergent death scene
+    - {LEGEND_TEXT}   // emergent Rome-indifference reflection
+
+    Internal end-of-run field:
+
+    - FINAL_DISTRICT   // internal only; not a UI placeholder unless a future
+                       // template explicitly adds it.
+
+    Stats:
+
+    - {TURNS_SURVIVED}
+    - {COINS_TOTAL}
+    - {COINS_WASTED}
+    - {TRUST_ERRORS}
+    - {PICKPOCKETS}
+    - {CAUSE_OF_DOOM}
+
+    Notes:
+    - ATTENTION has no placeholder.
+    - Resolve all placeholders before rendering a screen.
+    - Before output, scan the final screen for unresolved brace tokens.
+      If any {PLACEHOLDER} remains, repair or use fallback text before
+      rendering. Never show raw placeholder braces to the player.
+
+  /pleb-life/README.txt
+    Pleb Life — Micro Roguelike (Tuned Emergent)
+
+    You are a Roman pleb trying to survive a few more turns in and
+    around the Subura and nearby districts. Each turn is a short slice
+    of your day, generated from game state plus ingredient pools.
+
+    Launch:
+    - Install/open/run/boot renders the title screen immediately.
+    - The title screen is the game main menu.
+    - start(run) remains a hot restart command, not a required first step.
+
+    Loop:
+    - Title → Turn loop → End screen → Title.
+    - Each turn:
+      - show DOOM / COINS,
+      - generate one continuity-aware micro-paragraph,
+      - offer three numbered choices that always advance the run.
+
+    Hidden:
+    - ATTENTION (0–5) tracks how noticed you are; higher values sharpen
+      DOOM swings and tighten language.
+    - ATTENTION is never shown directly.
+
+    Narrative:
+    - TURN_DESCRIPTION loosely follows “memory → now → pressure” but may
+      drop or blend elements.
+    - 1–4 sentences, typically 2–3.
+    - Text draws from:
+      - origin trouble and recent event_tags,
+      - doom/attention bands,
+      - district + location,
+      - ingredient pools (smells, sounds, motions, tensions, Rome mood,
+        and small historical signals like weights, tokens, edicts).
+
+    Starts:
+    - Player chooses:
+      1) Subura
+      2) Market
+      3) Wherever Rome throws you
+    - Engine binds one origin trouble from
+      /assets/starting_scenarios.txt for the whole run.
+
+    End:
+    - When DOOM reaches 10:
+      - derive doom_cause_theme from recent events and district,
+      - map to a label from doom_causes_local.txt,
+      - synthesize DEATH_TEXT from ending ingredients,
+      - synthesize LEGEND_TEXT from Rome-indifference +
+        run_length_modifiers,
+      - render /ui/end_screen.txt,
+      - on input "1", return to title.
+
+  /pleb-life/formatting.txt
+    Pleb Life — Formatting Notes (v1.8.2-COMMERCIAL, Indent + Ragged-Right)
+
+    Goal:
+    - Match the fixed monospace layout: centered header bar, indented UI,
+      ragged right, no justification. See /ui/*.txt for reference.
+
+    LAYOUT RULES
+
+    1. Code Block
+    - Each rendered screen appears inside exactly one fenced monospace code
+      block.
+    - Do not keep one long code block open across multiple player turns.
+    - During gameplay, output no commentary outside the current screen block.
+
+    2. Indent Bands
+    - Frame lines (╔…╗ / ╚…╝) start at column 17 (17 leading spaces).
+    - Standard UI lines (title bar, location, DOOM/COINS, rules,
+      “What do you do?”, first line of each choice) also use 17 spaces.
+    - TURN_DESCRIPTION lines use 18 spaces.
+    - Wrapped continuation lines for choices use 20 spaces so they align
+      under the text after “1) ”.
+
+    3. Section Spacing
+    - One blank line after the bottom frame line.
+    - One blank line after the location line.
+    - One blank line after the horizontal rule (before “What do you
+      do?”).
+    - One blank line after “What do you do?”.
+    - One blank line between each choice.
+
+    4. Wrapping
+    - TURN_DESCRIPTION must stay inside the right bound of the header.
+    - Prefer short clauses and conservative wrapping over long lines.
+    - If a paragraph approaches the visual width limit, shorten it before
+      rendering.
+    - Choices:
+      - First line: 17 spaces + “1) ” + text (aim for ≤40–45 visible
+        characters).
+      - Continuation lines: 20 spaces + text.
+
+    5. TURN_DESCRIPTION
+    - Single paragraph (no internal blank lines).
+    - 1–4 sentences (3 is ideal).
+    - Must create clear decision-pressure.
+
+    6. Horizontal Rules
+    - Use the exact “─” bar from /ui/turn_screen_template.txt, indented
+      with 17 spaces.
+
+    7. Title & End Screens
+    - Use /ui/title_screen.txt and /ui/end_screen.txt verbatim.
+    - Only fill placeholders.
+
+    8. Cleanliness
+    - Avoid trailing spaces or stray characters.
+    - Maintain consistent indentation on every line.
+
+//  UI FILES
+  /pleb-life/ui/title_screen.txt
+
+                 ╔══════════════════════════════════════════════╗
+                 ║               P L E B   L I F E              ║
+                 ╚══════════════════════════════════════════════╝
+                 
+                           Survive Ancient Rome. Barely.
+
+                 HOW TO PLAY:
+
+                 Each turn presents a situation and three choices.
+                 Pick 1, 2, or 3. When things go poorly, DOOM rises.
+                 Reach 10 and Rome swallows you whole. COINS help,
+                 but slip away quickly. Your purpose is simple:
+
+                    Stay alive for as long as you can.
+
+                 ────────────────────────────────────────────────
+                 
+                 Where does your trouble begin?
+                 
+                 1) Subura – Walls thin, tempers thinner
+                 
+                 2) Market – Crowds, stalls, and loose tongues
+                 
+                 3) Rome’s Decision – Let Fortuna decide
+
+  /pleb-life/ui/turn_screen_template.txt
+                 ╔══════════════════════════════════════════════╗
+                 ║               P L E B   L I F E              ║
+                 ╚══════════════════════════════════════════════╝
+                 
+                 ⟢ Location: {LOCATION_LABEL} ⟣
+                 
+                 DOOM [{DOOM_BAR}] {DOOM}/10 ({DOOM_DELTA})     COINS: {COINS} ({COINS_DELTA})
+                 ────────────────────────────────────────────────
+                  {TURN_DESCRIPTION}
+                 ────────────────────────────────────────────────
+                 
+                 What do you do?
+                 
+                 1) {CHOICE_1}
+                 
+                 2) {CHOICE_2}
+                 
+                 3) {CHOICE_3}
+
+  /pleb-life/ui/sample_turn.txt
+                 ╔══════════════════════════════════════════════╗
+                 ║               P L E B   L I F E              ║
+                 ╚══════════════════════════════════════════════╝
+
+                 ⟢ Location: Market – Inner Rows ⟣
+
+                 DOOM [##--------] 2/10 (+1)     COINS: 1 (0)
+                 ────────────────────────────────────────────────
+                  You stand firm and call them a liar. Their face
+                  darkens, and nearby vendors go quiet—the kind of
+                  silence that draws more eyes. A guild mark trader
+                  to your left pretends not to listen, but his hand
+                  tightens on his bronze weight. You've bought time,
+                  but the air feels thinner now.
+                 ────────────────────────────────────────────────
+
+                 What do you do?
+
+                 1) Offer a coin to settle the matter and move on
+
+                 2) Suggest they take their complaint to the aedile
+
+                 3) Turn and walk away before this gets worse
+              
+  /pleb-life/ui/end_screen.txt
+                 ╔════════════════════════════════════════════════════╗
+                 ║            Y O U   A R E   D O O M E D             ║
+                 ╚════════════════════════════════════════════════════╝
+                 
+                 ⟢ Final Moments — {FINAL_LOCATION} ⟣
+                 
+                 DOOM [##########] 10/10     COINS: {FINAL_COINS}
+                 ────────────────────────────────────────────────────
+                  {DEATH_TEXT}
+                 ────────────────────────────────────────────────────
+                 
+                 S T A T S
+                 ──────────
+                 • Turns Survived:      {TURNS_SURVIVED}
+                 • Coins Earned:        {COINS_TOTAL}
+                 • Coins Wasted:        {COINS_WASTED}
+                 • Trusted a Stranger:  {TRUST_ERRORS}
+                 • Times Pickpocketed:  {PICKPOCKETS}
+                 • Cause of Doom:       {CAUSE_OF_DOOM}
+                 
+                 Y O U R   L E G E N D
+                 ──────────────────────
+                  {LEGEND_TEXT}
+                 
+                 C R E D I T S
+                 ──────────────
+                  Prairie Labs
+                 
+                 ────────────────────────────────────────────────────
+                 1) Return to title
+ 
+
+  /pleb-life/ui/readme_ui.txt
+    Pleb Life UI Notes
+
+    1. /ui/*.txt are fixed-layout templates. Only replace {PLACEHOLDERS}.
+      Do not change box characters, borders, or headings.
+
+    2. {TURN_DESCRIPTION} must be:
+      - a single visual block (no blank lines),
+      - 1–4 sentences,
+      - grounded in {LOCATION_LABEL},
+      - clearly implying that you must act now,
+      - wrapped and indented according to /formatting.txt.
+
+    3. DOOM display:
+      - {DOOM_BAR}: 10 chars (# or -),
+      - {DOOM_DELTA}: "+n", "-n", or "0".
+      - {DOOM_BAR} must always exactly reflect the current {DOOM}
+        value: "#" repeated DOOM times followed by "-" repeated
+        (10 - DOOM) times. Do not reuse a previous bar; always
+        recompute it from the updated doom value.
+
+    4. Navigation:
+      - Player input is always "1", "2", or "3".
+      - All three options always advance the run.
+
+    5. Flow:
+      - Install/open/run/boot → Title screen / main menu.
+      - Title → Turn loop → End screen → Title (on "1").
+      - start(run) at any time → fresh title screen.
+
+    6. ATTENTION:
+      - Never exposed as a stat; only implied by the wording and tension.
+
+    7. LEGEND_TEXT:
+      - Short emergent reflection on your run, colored by district,
+        cause-of-doom, and roughly how long you lasted.
+      - It should vary between runs, not be a fixed block.
+
+//  ENGINE FILES
+  /pleb-life/engine/pleb_state_machine.txt
+    Pleb Life — State Machine (v1.8.2-COMMERCIAL)
+
+    Purpose:
+    - Forward-only loop: TITLE → TURNS → END → TITLE.
+    - Inputs are always "1", "2", or "3".
+    - DOOM climbs toward 10; the run ends at DOOM 10.
+    - ATTENTION is hidden but influences DOOM and tone.
+
+    Core state:
+    - doom              : int, 0–10
+    - coins             : int, ≥ 0
+    - attention         : int, 0–5 (hidden)
+    - district          : string, e.g. "Subura"
+    - location_label    : string, e.g. "Subura – Tenement Stairs"
+    - turn_count        : int, ≥ 0
+    - origin_scenario_id: string
+    - origin_summary    : string
+    - last_choice       : 1, 2, or 3
+    - choice_profile    : direct, social, evasive, or origin
+    - behavior_summary  : short internal choice result label
+    - cause_of_doom     : string
+    - doom_cause_theme  : string (internal: "market_surge", "quiet_fever", etc.)
+    - flags             : e.g. tired, hungry, stressed, unsettled, observed
+    - stats             : coins_total, coins_wasted, trust_errors, pickpockets
+    - event_tags        : dynamic tags describing recent events
+
+    Entry:
+    - On install/open/run/boot OR start(run):
+      - doom = 1, coins = 1, attention = 0, turn_count = 0
+      - clear flags, stats, origin_scenario_id, origin_summary,
+        event_tags, cause_of_doom, doom_cause_theme,
+        choice_profile, behavior_summary
+      - render /ui/title_screen.txt immediately.
+      - treat /ui/title_screen.txt as the game main menu.
+      - do not wait for start(run) after install/open/run/boot.
+
+    Restart:
+    - If start(run) appears at any time:
+      - clear current run completely,
+      - apply Entry reset,
+      - render /ui/title_screen.txt only.
+
+    Title screen:
+    - Option 1:
+        district       = "Subura"
+        location_label = "Subura – Tenement Stairs"
+        origin scenario from [SUBURA] in /assets/starting_scenarios.txt
+    - Option 2:
+        district       = "Market"
+        location_label = "Market – Outer Stalls"
+        origin scenario from [MARKET]
+    - Option 3:
+        district       = random of {"Subura","Market","Forum","Baths","Docks"}
+        location_label = default for that district
+        origin scenario from [WHEREVER]
+
+    - Set last_choice to chosen option.
+    - Bind origin_scenario_id and origin_summary from the chosen asset.
+    - Begin TURN_LOOP.
+
+    Turn loop (while doom < 10):
+
+    Consequence timing:
+    - The screen currently being rendered shows the consequence of the most
+      recently accepted input.
+    - After the title screen, the most recent input is the origin choice.
+    - After a turn screen, the most recent input is the player's selected
+      numbered action from that screen.
+    - Therefore DOOM_DELTA, COINS_DELTA, TURN_DESCRIPTION, event_tags, and
+      pressure should all align with the previous visible choice.
+
+    1) turn_count += 1.
+
+    2) Run session_state:
+      - verify required state exists,
+      - preserve hidden fields,
+      - recover safely if state is missing.
+
+    3) Run choice_resolver:
+      - in: last_choice, current state, origin_*, district, location_label,
+            doom, coins, attention, flags, event_tags, turn_count
+      - out: choice_profile, behavior_summary, attention_tendency,
+             doom_delta_suggestion, coin_delta_suggestion,
+             updated event_tags.
+      - On the first turn after title, treat last_choice as an origin choice
+        and use origin_summary as the main pressure source.
+
+    4) Run attention_logic:
+      - in: attention, doom, district, last_choice, choice_profile,
+            attention_tendency, flags
+      - out: attention, flags.
+
+    5) Run location_logic:
+      - in: district, coins, doom, attention, last_choice, choice_profile,
+            event_tags
+      - out: district, location_label.
+
+    6) Run ingredient_synthesis:
+      - in: full state + choice_profile + behavior_summary + event_tags
+      - out: ingredient_bundle_memory, ingredient_bundle_turn,
+            ingredient_bundle_pressure.
+
+    7) Run turn_generator:
+      - in: ingredient bundles, doom, coins, attention,
+            district, location_label, turn_count, last_choice,
+            choice_profile, behavior_summary,
+            flags, origin_*, event_tags,
+            doom_delta_suggestion, coin_delta_suggestion
+      - out: TURN_DESCRIPTION, CHOICE_1..3,
+              aligned doom_delta_suggestion,
+              aligned coin_delta_suggestion,
+              updated event_tags.
+      - The generator may refine weak suggestions, but must not contradict
+        the choice_resolver or the visible narrative.
+
+    8) Run doom_logic:
+      - in: doom, aligned doom_delta_suggestion, turn_count, attention
+      - out: doom, DOOM_BAR, DOOM_DELTA
+      - doom must be updated and clamped before DOOM_BAR is generated,
+        and DOOM_BAR must be derived from the new doom value.
+      - if doom == 10 → mark dead.
+
+    9) Run coin_logic:
+      - in: coins, aligned coin_delta_suggestion, event_tags
+      - out: coins, COINS_DELTA, coins_total, coins_wasted.
+
+    10) Update stats from event_tags.
+
+    11) Update doom_cause_theme from recent doom-related tags.
+
+    12) If doom < 10, run enforcement placeholder and width guards.
+
+    13) If doom < 10, render /ui/turn_screen_template.txt with:
+        LOCATION_LABEL, DOOM_BAR, DOOM, DOOM_DELTA,
+        COINS, COINS_DELTA, TURN_DESCRIPTION, CHOICE_1..3.
+
+    14) If doom < 10, read input ("1","2","3") into last_choice.
+
+    15) If doom < 10, repeat loop; otherwise go to END.
+
+    End:
+    - Clamp doom to 10.
+    - Run closer_logic to produce:
+        FINAL_LOCATION, FINAL_COINS, CAUSE_OF_DOOM,
+        DEATH_TEXT, doom_cause_theme (final).
+    - Set cause_of_doom = CAUSE_OF_DOOM from closer_logic before compiling
+      stats.
+    - Run stats_compiler to produce:
+        TURNS_SURVIVED, COINS_TOTAL, COINS_WASTED,
+        TRUST_ERRORS, PICKPOCKETS, CAUSE_OF_DOOM.
+    - Run obituary_filler to produce:
+        FINAL_DISTRICT, LEGEND_TEXT.
+    - Render /ui/end_screen.txt.
+    - On input "1":
+        reset state as in Entry and return to TITLE_SCREEN.
+
+  /pleb-life/engine/doom_logic.txt
+    Pleb Life — Doom Logic (high-variance stabilized curve, v1.8.2-COMMERCIAL)
+
+    doom:
+    - integer in [0,10]
+    - DOOM_DELTA is "+n", "-n", or "0"
+    - DOOM_BAR is always 10 chars: "#" * doom + "-" * (10 - doom)
+
+    Bands (by turn_count):
+
+    Early game (1–3):
+    - doom_delta ∈ {-1, 0, +1, +2}
+    - mostly small moves, rare +2 spikes.
+
+    Mid game (4–7):
+    - doom_delta ∈ {-2, -1, 0, +1, +2, +3}
+    - mix of dips and spikes; +2 common; -2/+3 rarer.
+
+    Late game (≥8):
+    - doom_delta ∈ {-1, 0, +1, +2, +3}
+    - +2/+3 dominate; -1 reprieves are rare.
+
+    Attention bias:
+    - Low attention (0–1): bias toward -1 / 0, away from +2/+3.
+    - Mid attention (2–3): use bands as-is.
+    - High attention (4–5): bias toward +1/+2/+3, away from -1/0.
+
+    Stabilization rules:
+    - doom_delta_suggestion must always be defined; if missing, treat as 0.
+    - Allowed final doom_delta values: -2, -1, 0, +1, +2, +3.
+    - When in doubt, prefer smaller moves rather than large jumps.
+
+    Algorithm:
+    1) Start from doom_delta_suggestion (may be 0).
+    2) Choose a base doom_delta from the band for the current turn_count with RNG
+      and weights.
+    3) Shift the base delta based on attention band, nudging up or down in the
+      allowed range.
+    4) Blend suggestion and base:
+      - When the narrative strongly implies a rise in danger, favor the suggestion
+        if it is positive.
+      - When the narrative implies a small reprieve, allow -1 or 0 even in mid
+        or late bands.
+    5) Clamp the final doom_delta to the allowed range.
+    6) new_doom = clamp(old_doom + doom_delta, 0, 10).
+    7) DOOM_BAR = "#" * new_doom + "-" * (10 - new_doom).
+    8) DOOM_DELTA is the string form of doom_delta ("+n", "-n", or "0").
+    9) If new_doom == 10, mark the run as dead.
+
+    Return:
+    - doom (updated, new_doom)
+    - DOOM_BAR
+    - DOOM_DELTA
+
+    Notes:
+    - DOOM_BAR must always exactly reflect the updated doom value.
+    - Normal turn screens must only ever show doom values in [0–9]; when doom
+      reaches 10, enforcement ensures the engine goes directly to END.
+
+  /pleb-life/engine/coin_logic.txt
+    Pleb Life — Coin Logic (v1.8.2-COMMERCIAL)
+
+    coins:
+    - integer ≥ 0
+    - COINS_DELTA is "+n", "-n", or "0"
+    - coins_total: sum of all positive deltas
+    - coins_wasted: sum of clearly frivolous losses
+
+    Inputs:
+    - coins
+    - coin_delta_suggestion (high-level hint from turn_generator)
+    - event_tags
+
+    Categories:
+    - small_gain   → +1
+    - medium_gain  → +2
+    - big_gain     → +3
+    - small_loss   → -1
+    - medium_loss  → -2
+    - big_loss     → -3
+    - neutral      → 0
+    - windfall     → +3 or more, usually risky and rare
+
+    Typical behavior:
+    - Most turns: 0 or -1 common; +1 less common.
+    - Risky choices: may trigger medium/big gains or losses and often pair with
+      stronger doom deltas.
+    - Safer choices: tend toward small_loss or neutral.
+
+    Stabilization rules:
+    - coin_delta_suggestion must always be defined; if missing, treat as "neutral".
+    - When coin_delta_suggestion is "windfall", clamp to a rare +3 outcome and only
+      allow when tags indicate unusual risk or luck.
+    - Never invert the sign implied by suggestion; a gain-suggesting event should
+      not become an actual loss, and vice versa.
+
+    Update:
+    - Interpret coin_delta_suggestion using the mapping above to obtain an integer
+      coin_delta.
+    - When TURN_DESCRIPTION or choice text explicitly describes spending or
+      receiving coin(s), coin_delta_suggestion must have been set so that
+      COINS_DELTA aligns with the narrative:
+      - no “he gives you a coin” on turns where COINS_DELTA ≤ 0,
+      - no “you buy bread with a coin” on turns where COINS_DELTA ≥ 0.
+    - If coin_delta_suggestion is "neutral", choose coin_delta from {0, -1, +1}
+      based on context, with small losses more common than gains.
+    - coins = max(0, coins + coin_delta).
+    - If coin_delta > 0:
+        coins_total += coin_delta.
+    - If coin_delta < 0 and the loss is clearly frivolous (as indicated by
+      event_tags, e.g. gambling or indulgence):
+        coins_wasted += |coin_delta|.
+
+    Render:
+    - {COINS} should display the updated coins value.
+    - If the updated coins text would exceed the UI width, display "99+" while
+      preserving the full numeric coins value internally.
+
+    Return:
+    - coins
+    - COINS_DELTA
+    - coins_total
+    - coins_wasted
+
+  /pleb-life/engine/location_logic.txt
+    Pleb Life — Location Logic (v1.8.2-COMMERCIAL)
+
+    Districts:
+    - "Subura"
+    - "Market"
+    - "Forum"
+    - "Baths"
+    - "Docks"
+
+    LOCATION_LABEL = "District – Detail", e.g.:
+    - "Subura – Tenement Stairs"
+    - "Subura – Alley Shrine"
+    - "Market – Outer Stalls"
+    - "Forum – Speaker’s Steps"
+    - "Baths – Hot Room"
+    - "Docks – Warehouse Edge"
+
+    Title choice:
+    - 1 → Subura – Tenement Stairs
+    - 2 → Market – Outer Stalls
+    - 3 → random district default label
+
+    On each turn:
+    - ≈70% chance: stay in same district, update detail string.
+    - ≈30% chance: move to a new district based on context:
+      - work/commerce: Market, Docks, Forum
+      - rest/clean-up: Baths
+      - desperation/cheap: Subura
+
+    coins, doom, attention, and last_choice steer which district is
+    selected, but mapping uses RNG to avoid determinism.
+
+    Return:
+    - district
+    - location_label.
+
+  /pleb-life/engine/attention_logic.txt
+    Pleb Life — Attention Logic (Ambient Attention System, v1.8.2-COMMERCIAL)
+
+    attention:
+    - integer 0–5
+      0 = barely noticed
+      5 = strongly noticed
+
+    Inputs:
+    - previous attention
+    - doom
+    - district
+    - last_choice
+    - choice_profile
+    - attention_tendency from choice_resolver
+    - flags (tired, hungry, stressed, unsettled, observed)
+
+    Update sketch:
+    - Forum / Baths with doom ≥3 → slight upward push on attention.
+    - Subura / Docks often neutral or forgiving.
+    - Market depends strongly on behavior (tags: bold/cautious, hustle).
+
+    Behavior:
+    - Cautious / blending choices → small chance to reduce attention.
+    - Bold / conspicuous / repeated hiding → small chance to increase.
+    - Erratic behavior at high doom (≥6) can nudge attention upward.
+
+    Bounds:
+    - Clamp attention to [0,5].
+
+    Flags:
+    - High attention (4–5): observed = true, stressed = true.
+    - Low attention (0–1): observed may clear; stressed may ease when
+      nothing bad happens.
+
+    Narrative flavor:
+    - ingredient_synthesis pulls from attention_flavor.txt to color how
+      noticed you feel.
+
+    Return:
+    - attention (updated)
+    - flags (updated).
+
+  /pleb-life/engine/ingredient_synthesis.txt
+    Pleb Life — Ingredient Synthesis Engine (v1.8.2-COMMERCIAL)
+
+    Purpose:
+    - Convert state + tags into small bundles of atomic narrative ingredients for
+      turn_generator to express freely.
+    - Enforce stable bundle sizes so every turn has enough, but not too many,
+      signals to produce a short, vivid paragraph that respects UI width.
+    - Ensure no bundle is ever empty; always provide a sensible fallback.
+
+    Inputs:
+    - doom band (early / mid / late)
+    - attention band (low / mid / high)
+    - district
+    - location_label
+    - choice_profile (origin / direct / social / evasive)
+    - flags
+    - origin_scenario_id / origin_summary
+    - event_tags
+
+    Ingredient pools (see /assets/ingredients/*.txt):
+    - smells_subura / market / forum / baths / docks
+    - sounds_crowd
+    - motions_crowd
+    - glances_officials
+    - hazards_street
+    - tensions_inner
+    - doom_pressure
+    - indifference_rome
+    - run_length_modifiers
+    - attention_flavor
+    - endings_frames (only at death)
+    - social_currents
+    - objects_environmental
+    - official_behavior
+    - district_subura / market / forum / baths / docks
+    - economic_signals
+
+    STABILITY CONSTRAINTS
+    ------------------------------------
+    Bundle size targets (hard bounds):
+    - ingredient_bundle_memory:   0–2 items
+    - ingredient_bundle_turn:     3–5 items
+    - ingredient_bundle_pressure: 2–3 items
+
+    District binding:
+    - If a district jump occurs and the new district’s ingredient bucket would be
+      empty or invalid, reuse the previous district’s bucket for one turn instead
+      of emitting an empty bundle.
+
+    Hazard moderation:
+    - At most 1 hazard_street signal per turn.
+    - Prefer hazards when doom band is mid/late or attention is high.
+
+    Tone balance:
+    - At most 1 glances_officials OR official_behavior per turn.
+    - At most 1 tensions_inner per turn.
+    - At least 1 ingredient in ingredient_bundle_turn must clearly ground the scene
+      in the current district (smell or district_* detail).
+
+    Economic modulation:
+    - economic_signals only included when:
+      - coins are low (≤1), OR
+      - recent coin_events exist, OR
+      - attention is high (≥3).
+
+    Freshness:
+    - Avoid reusing the exact same ingredient on consecutive turns unless
+      event_tags strongly justify repetition.
+
+    PROCESS
+    -------
+
+    1) ingredient_bundle_memory
+
+    - Turn 1:
+      - Derive 1 short signal from origin_summary, e.g.
+        "unpaid_debt", "angry_landlord", "offended_official".
+    - Later turns:
+      - Pick 0–2 tags from recent event_tags that matter:
+        "close_call", "trusted_wrong_face", "barely_slipped_past".
+
+    Size enforcement:
+    - If more than 2 candidates → keep at most 2, preferring the most recent.
+    - If 0 candidates:
+      - Optionally add 1 generic memory signal such as:
+        "lingering_trouble", "too_many_eyes", "days_blur_together".
+
+    Output:
+    - ingredient_bundle_memory with 0–2 short abstract signals.
+
+    2) ingredient_bundle_turn
+
+    Selection, in order:
+
+    a) District smell (1):
+      - Choose exactly 1 smell from the current district’s smells_* file.
+
+    b) District detail (1):
+      - Choose 0–1 detail from the current district_* file.
+      - If none are available, skip and rely on other ingredients.
+
+    c) Crowd sound (1):
+      - Choose 1 from sounds_crowd.
+
+    d) Crowd motion (0–1):
+      - Optionally choose 0–1 from motions_crowd.
+
+    e) Object or social current (0–1):
+      - Optionally choose 0–1 from:
+        - objects_environmental
+        - social_currents
+      - Bias toward social_currents when doom is rising or location is
+        Market/Forum/Docks.
+
+    f) Hazard (0–1):
+      - At most 1 from hazards_street.
+      - Only consider when doom band is mid/late or attention band is mid/high.
+
+    Size enforcement:
+    - After candidate selection, ensure:
+      - If more than 5 items → trim lowest-priority extras in this order:
+        hazard → object/social → motion.
+      - If fewer than 3 items → supplement from district_* and smells_* until
+        3 items are reached (or use generic "ambient_stir" if needed).
+
+    Output:
+    - ingredient_bundle_turn with 3–5 items.
+
+    3) ingredient_bundle_pressure
+
+    Selection, in order:
+
+    a) Doom pressure:
+      - Choose 1–2 signals from doom_pressure keyed to doom band.
+
+    b) Attention flavor:
+      - Choose 1 from attention_flavor keyed to attention band.
+
+    c) Optional supervision:
+      - For mid/late doom or high attention:
+        - Optionally add 0–1 from glances_officials OR official_behavior,
+          especially in Forum/Market districts.
+
+    d) Optional economic signal:
+      - Optionally add 0–1 from economic_signals if:
+        - coins are low, OR
+        - recent coin_events exist, OR
+        - doom/attention suggest economic pressure.
+
+    Size enforcement:
+    - After candidate selection:
+      - If more than 3 items → trim in this order:
+        economic_signal → glances_officials/official_behavior.
+      - If fewer than 2 items → add a generic pressure such as:
+        "paths_feel_tight", "city_weight_on_your_back".
+
+    Output:
+    - ingredient_bundle_pressure with 2–3 items.
+
+    4) Fallback behavior
+
+    If any unexpected error would result in:
+    - empty ingredient_bundle_turn, OR
+    - empty ingredient_bundle_pressure:
+
+    Then emit safe defaults:
+
+    - ingredient_bundle_memory:
+        ["lingering_trouble"]
+    - ingredient_bundle_turn:
+        ["ambient_noise", "district_stir", "crowd_moves"]
+    - ingredient_bundle_pressure:
+        ["narrow_choices", "city_weight_close"]
+
+    These remain abstract signals for turn_generator to phrase; they are not to be
+    printed as literal tokens.
+
+    RETURNS
+    -------
+    - ingredient_bundle_memory (0–2 items)
+    - ingredient_bundle_turn (3–5 items)
+    - ingredient_bundle_pressure (2–3 items)
+
+  /pleb-life/engine/turn_generator.txt
+    Pleb Life — Turn Generator (Emergent Micro-Story, v1.8.2-COMMERCIAL)
+
+    Purpose:
+    - Take ingredient bundles + state and emit:
+      - TURN_DESCRIPTION,
+      - CHOICE_1/2/3,
+      - doom_delta_suggestion,
+      - coin_delta_suggestion,
+      - updated event_tags.
+    - Guarantee that every turn yields a short, vivid, UI-safe paragraph that fits
+      the fixed monospace layout and enforces decision-pressure.
+
+    Inputs:
+    - ingredient_bundle_memory
+    - ingredient_bundle_turn
+    - ingredient_bundle_pressure
+    - doom, coins, attention
+    - district, location_label
+    - turn_count
+    - last_choice
+    - choice_profile
+    - behavior_summary
+    - flags
+    - origin_scenario_id, origin_summary
+    - event_tags
+    - doom_delta_suggestion from choice_resolver
+    - coin_delta_suggestion from choice_resolver
+
+    TURN_DESCRIPTION
+    ----------------
+
+    Shape:
+    - 1–4 sentences, single paragraph, no blank lines.
+    - Must:
+      - anchor the player in {LOCATION_LABEL},
+      - acknowledge lingering trouble or present atmosphere,
+      - imply that inaction is not an option.
+    - TURN_DESCRIPTION must never be empty. If synthesis fails, use the fallback
+      paragraph described below.
+
+    Structure (loose template):
+    - location anchor clause,
+    - optional memory clause,
+    - scene clause,
+    - pressure / decision clause.
+
+    Location anchor:
+    - Always mention {LOCATION_LABEL} in the first or second sentence, e.g.:
+      - "Here at {LOCATION_LABEL}, the air does not sit still."
+      - "The stretch of {LOCATION_LABEL} around you feels shifted today."
+
+    Memory clause (optional):
+    - When ingredient_bundle_memory has entries, transform 1 into a short
+      reference, e.g.:
+      - "The matter from last night still tugs at the back of your thoughts."
+      - "You have not really left that debt behind."
+
+    Scene clause (required):
+    - Compose from 2–3 items in ingredient_bundle_turn.
+    - Combine smell, sound, motion, and local detail into one concise sentence.
+    - Aim for short, concrete phrasing; avoid overlong clauses.
+
+    Pressure / decision clause (required):
+    - Use ingredient_bundle_pressure to color how tight the situation feels.
+    - End the paragraph with clear decision-pressure, e.g.:
+      - "People shift in a way that makes standing where you are feel wrong."
+      - "If you do not move soon, someone else will decide what happens to you."
+
+    Width & wrapping (per /formatting.txt):
+    - The engine should wrap TURN_DESCRIPTION so that:
+      - lines stay comfortably inside the right bound of the header,
+      - 18 spaces prefix the first line,
+      - continuation lines for the paragraph use 20 spaces,
+      - sentences remain fairly short (roughly 10–18 words),
+      - when in doubt, shorten rather than risk hitting the right edge.
+    - If a candidate TURN_DESCRIPTION would overflow the header width after
+      wrapping, shorten clauses and, if necessary, fall back to the safe paragraph
+      below.
+
+    Fallback TURN_DESCRIPTION:
+    - If ingredient bundles are unexpectedly thin or a synthesis attempt fails,
+      or width constraints cannot be satisfied, use:
+
+      "Here at {LOCATION_LABEL}, the crowd shifts around you and nothing feels
+      settled. The pressure in the street makes it clear you cannot simply stay
+      where you are."
+
+    - This text should be wrapped and indented according to /formatting.txt.
+
+    CHOICES
+    -------
+
+    Each turn must emit three numbered choices:
+
+    - CHOICE_1 (direct):
+      - straightforward action or work-like move.
+      - Often involves pushing forward, taking on a task, or confronting a
+        situation.
+
+    - CHOICE_2 (social / informational):
+      - talking, listening, asking, appealing, eavesdropping.
+
+    - CHOICE_3 (evasive / sideways):
+      - slipping aside, retreating, circling around, hiding, stalling.
+
+    Constraints:
+    - Each choice line should comfortably fit within the width rules:
+      - 17 spaces + "1) " + text,
+      - aim for ≤ 40–45 visible characters of text,
+      - continuation lines, if needed, use 20 spaces and remain within the same
+        effective width window.
+    - Choices must never be empty.
+    - If a drafted choice would be too long after wrapping, rephrase it shorter
+      rather than risk breaking the right edge.
+    - If a stable phrasing cannot be found, fall back to a short generic option:
+      - CHOICE_1 fallback: "Push forward."
+      - CHOICE_2 fallback: "Trade a quick word."
+      - CHOICE_3 fallback: "Slip aside."
+
+    All three options always advance the run.
+
+    DELTA ALIGNMENT
+    ---------------
+
+    choice_resolver is the primary authority for doom_delta_suggestion and
+    coin_delta_suggestion. turn_generator may refine vague suggestions for
+    narrative fit, but it must not contradict the resolver, the previous visible
+    choice, or the text it renders.
+
+    doom_delta_suggestion:
+    - Must always be defined; default to 0 if no clear signal.
+    - Usually derived from a blend of:
+      - resolved choice_profile,
+      - doom band,
+      - attention band,
+      - whether the previous choice was bold, social, evasive, or origin-bound,
+      - presence of hazards or crowd pressure.
+    - Use simple values: -1, 0, +1, or +2.
+    - Riskier or more aggressive choices tend to nudge toward +1/+2; cautious
+      or blending choices toward 0/-1.
+    - If the paragraph clearly describes a reprieve, do not show a large positive
+      DOOM_DELTA unless the reprieve is explicitly false or costly.
+
+    coin_delta_suggestion:
+    - Must always be defined; default to "neutral" if no clear signal.
+    - Categories:
+      - "small_gain"
+      - "medium_gain"
+      - "big_gain"
+      - "small_loss"
+      - "medium_loss"
+      - "big_loss"
+      - "neutral"
+    - Narrative alignment rules:
+      - If text explicitly describes receiving money or being given a coin,
+        coin_delta_suggestion must be some kind of gain.
+      - If text explicitly describes you spending, paying, or losing coin,
+        coin_delta_suggestion must be some kind of loss.
+      - If coin is not mentioned, choose between "neutral", "small_loss",
+        or "small_gain" based on turn tone and economic signals.
+      - Never display a COINS_DELTA that contradicts the paragraph.
+
+    EVENT_TAGS
+    ----------
+
+    Update event_tags from:
+    - trust_events (trusted_stranger_and_won/lost, refused_help, etc.)
+    - pickpocket_events
+    - coin_events (small_gain, windfall, etc.)
+    - doom_cause_hint ("crowd_surge", "fall", "water", "quiet_end", etc.)
+    - behavior_summary ("bold", "cautious", "flighty", "stubborn")
+    - suspicion_hint ("people_watching", "no_one_cares", etc.)
+    - economic_hint (optional, from economic_signals)
+    - crowd_or_edict_hint (optional, from social_currents)
+
+    These tags are internal only and never printed verbatim.
+
+    RETURNS
+    -------
+
+    turn_generator must return:
+    - TURN_DESCRIPTION (single paragraph, width-safe)
+    - CHOICE_1
+    - CHOICE_2
+    - CHOICE_3
+    - aligned doom_delta_suggestion (int in {-1,0,+1,+2})
+    - aligned coin_delta_suggestion (string category as above)
+    - updated event_tags
+
+  /pleb-life/engine/closer_logic.txt
+    Pleb Life — Closer Logic (Aligned Cause-of-Death, v1.8.2-COMMERCIAL)
+
+    Inputs:
+    - final doom (10)
+    - coins
+    - district
+    - location_label
+    - stats and event_tags
+    - current doom_cause_theme (may be partial)
+    - /assets/doom_causes_local.txt
+    - /assets/ingredients/endings_frames.txt
+
+    Goals:
+    - Ensure doom_cause_theme, CAUSE_OF_DOOM label, DEATH_TEXT,
+      FINAL_LOCATION, and district all tell the same kind of story
+      (no mismatched Subura fall with harbor water text).
+    - If any conflict appears, FINAL_LOCATION/district wins and the cause
+      must be remapped before the end screen renders.
+
+    Steps:
+
+    1) Finalize doom_cause_theme
+      - Prefer latest doom_cause_hint from event_tags.
+      - Else derive from most common doom-related tags:
+        "crowd_surge", "fall", "water", "quiet_fever", "crush".
+      - Factor in district:
+        - crowd_surge + Market → "market_surge"
+        - crowd_surge + Baths → "baths_surge"
+        - fall + Subura       → "subura_fall"
+        - fall + Forum        → "forum_fall"
+        - water + Docks       → "docks_water"
+        - quiet_fever         → "quiet_fever" (any district, tinted
+          by last).
+
+    2) CAUSE_OF_DOOM label (doom_causes_local.txt)
+      - Map doom_cause_theme + district to a label:
+        - "market_surge" → "Trampled in a market surge"
+        - "baths_surge"  → "Trampled in a bathhouse surge"
+        - "forum_fall"   → "Fell from the Forum steps"
+        - "subura_fall"  → "Fell from worn Subura stairs"
+        - "docks_water"  → "Swept under in a harbor accident"
+        - "subura_crush" → "Pinned in a tenement crush"
+        - "quiet_fever"  → "Lost quietly to fever in a back room"
+      - When multiple labels fit, pick with RNG but keep coherence.
+
+    3) FINAL_LOCATION
+      - Use last location_label.
+
+    4) FINAL_COINS
+      - Use current coins.
+
+    5) DEATH_TEXT (emergent)
+      - Use endings_frames.txt as ingredient source:
+        - where you were,
+        - what triggered the moment,
+        - how the body failed (soft, non-gory),
+        - how Rome continues afterward.
+      - Compose 2–4 sentences.
+      - Use ingredients keyed to:
+        - district group (Subura/Market/Docks/Forum/Baths),
+        - doom_cause_theme,
+        - doom/attention band at the end.
+
+    Return:
+    - FINAL_LOCATION
+    - FINAL_COINS
+    - CAUSE_OF_DOOM
+    - DEATH_TEXT
+    - doom_cause_theme (final).
+
+  /pleb-life/engine/stats_compiler.txt
+    Pleb Life — Stats Compiler (v1.8.2-COMMERCIAL)
+
+    Inputs:
+    - turn_count
+    - coins_total
+    - coins_wasted
+    - trust_errors
+    - pickpockets
+    - cause_of_doom
+
+    Outputs:
+    - TURNS_SURVIVED
+    - COINS_TOTAL
+    - COINS_WASTED
+    - TRUST_ERRORS
+    - PICKPOCKETS
+    - CAUSE_OF_DOOM
+
+    Rules:
+    - TURNS_SURVIVED = turn_count
+    - COINS_TOTAL    = coins_total
+    - COINS_WASTED   = coins_wasted
+    - TRUST_ERRORS   = trust_errors
+    - PICKPOCKETS    = pickpockets
+    - CAUSE_OF_DOOM  = cause_of_doom (from closer_logic).
+
+  /pleb-life/engine/obituary_filler.txt
+    Pleb Life — Obituary & Legend Filler (v1.8.2-COMMERCIAL)
+
+    Inputs:
+    - district
+    - doom (10)
+    - coins
+    - turn_count
+    - doom_cause_theme
+    - CAUSE_OF_DOOM
+
+    Outputs:
+    - FINAL_DISTRICT
+    - LEGEND_TEXT
+
+    Behavior:
+
+    1) FINAL_DISTRICT
+      - FINAL_DISTRICT = last district name:
+        "Subura", "Forum", "Market", "Baths", or "Docks".
+
+    2) LEGEND_TEXT
+      - Short block: 1 short paragraph or 2–3 sentences.
+      - Varies by:
+        - district,
+        - rough run length (short / medium / long),
+        - doom_cause_theme / CAUSE_OF_DOOM.
+      - Uses indifference_rome + run_length_modifiers ingredient pools.
+
+    Tone:
+    - Rome is indifferent, not theatrically cruel.
+    - Survival is modest but non-zero:
+      - short runs: "one more face the city barely registers."
+      - long runs: "for a while you managed to bend its attention."
+
+    Variation:
+    - Use RNG to pick among several phrasing frames per district group.
+    - Avoid reusing the exact same LEGEND_TEXT in a session when
+      reasonable variation exists.
+
+  /pleb-life/engine/choice_resolver.txt
+    Pleb Life — Choice Resolver (v1.8.2-COMMERCIAL)
+
+    Purpose:
+    - Give each numbered choice mechanical meaning.
+    - Make the next rendered turn feel like the consequence of the player's
+      previous visible decision.
+    - Provide stable inputs for attention_logic, doom_logic, coin_logic,
+      turn_generator, stats, and event_tags.
+
+    Inputs:
+    - last_choice: "1", "2", or "3"
+    - turn_count
+    - doom, coins, attention
+    - district, location_label
+    - origin_scenario_id, origin_summary
+    - flags
+    - event_tags
+    - previous visible choices, when available
+
+    Core mapping:
+    - Choice 1 = direct / worklike / confrontational.
+      - The player pushes forward, takes a job, argues, carries, confronts,
+        pays, grabs, blocks, or forces a path.
+      - More likely to raise DOOM or ATTENTION.
+      - More likely than other choices to produce coin gains when work or risk
+        is involved.
+
+    - Choice 2 = social / informational / trust-risk.
+      - The player asks, listens, appeals, bargains, eavesdrops, trusts,
+        lies, or trades words.
+      - More likely to touch trust_events.
+      - Can reduce danger through information or increase danger through bad
+        trust, gossip, officials, or witnesses.
+
+    - Choice 3 = evasive / sideways / attention-lowering.
+      - The player slips away, hides, circles, waits, blends in, retreats,
+        delays, or chooses the narrow path.
+      - More likely to reduce ATTENTION or keep DOOM stable.
+      - Can cost COINS, lose opportunity, trigger pickpocket events, or push
+        the player into a worse district.
+
+    - Title choice / origin:
+      - The first valid number after the title screen selects the origin.
+      - Treat it as choice_profile = "origin".
+      - Bind the origin scenario and use origin_summary as the first pressure.
+      - Opening deltas should be conservative unless the origin summary implies
+        immediate danger.
+
+    Outputs:
+    - choice_profile: "origin", "direct", "social", or "evasive"
+    - behavior_summary: short internal label, e.g.
+      "pushed_forward", "asked_wrong_face", "slipped_into_crowd"
+    - attention_tendency: "down", "flat", or "up"
+    - doom_delta_suggestion: -1, 0, +1, or +2
+    - coin_delta_suggestion: small_gain, medium_gain, big_gain,
+      small_loss, medium_loss, big_loss, neutral, or windfall
+    - updated event_tags
+
+    Resolution rules:
+    - Always define every output.
+    - Never expose choice_profile, behavior_summary, attention_tendency, or
+      event_tags to the player.
+    - The result must fit the previous visible choice text if available.
+      If the exact choice text is unavailable, use the core mapping above.
+    - Do not make every direct choice bad, every social choice foolish, or every
+      evasive choice safe. Bias them differently, but keep variance.
+    - At high DOOM, even good choices can produce ugly outcomes.
+    - At low ATTENTION, cautious choices have a real chance to cool the situation.
+    - Coin results must match visible text:
+      - receiving coin → gain category,
+      - paying/losing/spending coin → loss category,
+      - no money mentioned → neutral unless economic_signals justify a shift.
+
+    Stats hooks:
+    - Increment trust_errors only when a social/trust event clearly went wrong.
+    - Increment pickpockets only when pickpocket_events indicate a real loss.
+    - Mark coins_wasted only when the loss is frivolous or indulgent, not merely
+      survival spending.
+
+    Fallback:
+    - If resolver context is incomplete:
+      - choice_profile = mapping from last_choice if possible, else "direct".
+      - behavior_summary = "kept_moving".
+      - attention_tendency = "flat".
+      - doom_delta_suggestion = 0.
+      - coin_delta_suggestion = "neutral".
+      - event_tags add only a mild behavior_summary tag.
+
+  /pleb-life/engine/session_state.txt
+    Pleb Life — Session State Contract (v1.8.2-COMMERCIAL)
+
+    Purpose:
+    - Preserve continuity across turns.
+    - Prevent hidden state leaks.
+    - Recover cleanly if a weak runtime loses track of the run.
+
+    Required state fields:
+    - doom
+    - coins
+    - attention
+    - district
+    - location_label
+    - turn_count
+    - origin_scenario_id
+    - origin_summary
+    - last_choice
+    - choice_profile
+    - behavior_summary
+    - cause_of_doom
+    - doom_cause_theme
+    - flags
+    - stats
+    - event_tags
+
+    Hidden fields:
+    - attention
+    - event_tags
+    - doom_cause_theme
+    - choice_profile
+    - behavior_summary
+    - attention_tendency
+    - ingredient keys
+    - resolver internals
+
+    Rules:
+    - Never display hidden fields verbatim.
+    - Never display ATTENTION as a stat, number, label, bar, or placeholder.
+    - Preserve state after each valid input.
+    - The next screen must use the previous valid input as last_choice.
+    - Recompute DOOM_BAR from doom every time; never reuse a stale bar.
+    - Recompute COINS_DELTA from the current resolved coin result; never reuse a
+      stale coin delta.
+    - Keep stats cumulative for the current run only.
+    - On death, freeze run stats until the player returns to title.
+    - On title restart or start(run), clear all run state.
+
+    Placeholder guard:
+    - Before rendering, scan the screen for unresolved {PLACEHOLDER} tokens.
+    - If unresolved placeholders remain, repair using state or fallback text.
+    - If repair fails, render the title screen rather than leaking raw braces.
+
+    State-loss recovery:
+    - If the runtime loses required state during a run:
+      - do not hallucinate continuity,
+      - do not invent a death screen,
+      - render /ui/title_screen.txt as a clean reset,
+      - resume from the next valid "1", "2", or "3".
+
+  /pleb-life/engine/enforcement.txt
+    Pleb Life — Enforcement Rules (v1.8.2-COMMERCIAL)
+
+    Purpose:
+    - Guarantee that every rendered screen obeys UI and formatting rules.
+    - Prevent blank or malformed turns.
+    - Enforce safe fallbacks when any part of the engine misbehaves.
+    - Keep the loop deterministic: TITLE → TURN LOOP → END → TITLE.
+
+    1) Entry / Launch
+    - On install/open/run/boot, immediately show /ui/title_screen.txt.
+    - Treat /ui/title_screen.txt as the game main menu.
+    - Do not wait for start(run) after install/open/run/boot.
+    - start(run) remains a hot restart command at any time.
+    - Do not echo directory contents, commentary, metadata, patch notes, or
+      explanations when a run starts.
+
+    2) Input
+    - During TITLE and TURN screens, accept a move only when the latest user
+      message, after trimming whitespace, is exactly "1", "2", or "3".
+    - At END screen, accept only exact "1" to return to title.
+    - Do not treat numbers embedded inside commentary as choices.
+    - Lightly reprompt on anything else (e.g. “Please choose 1, 2, or 3.”)
+      inside one fenced monospace code block.
+
+    3) Flow
+    - Install/open/run/boot → Title/main menu.
+    - Title → Turn loop → End → Title.
+    - No backtracking; runs cannot resume after END.
+    - If start(run) appears again, reset and show a fresh title screen.
+    - Each turn screen shows the consequence of the previous valid input.
+
+    4) Turn Text
+    - TURN_DESCRIPTION is a single paragraph (no blank lines), 1–4 sentences.
+    - Must reference the current situation, anchor to location, and imply
+      decision-pressure.
+    - TURN_DESCRIPTION must not be empty; never render a screen where the two
+      horizontal rules appear with no paragraph between them.
+    - If ingredient_synthesis or turn_generator fail, or the resulting text cannot
+      be wrapped within the width constraints, fall back to the simple location +
+      pressure description defined in turn_generator.
+    - Use ingredient_synthesis + turn_generator; do NOT revert to static templates.
+
+    5) UI
+    - Never reformat /ui/*.txt.
+    - Only fill placeholders and wrap according to /formatting.txt.
+    - Do not trim leading spaces, change border lengths, or alter box characters;
+      copy the templates exactly and only interpolate placeholders.
+    - Before rendering any screen, scan for unresolved {PLACEHOLDER} tokens.
+      If any remain, repair from state or fallback before output. Never show
+      raw placeholder braces to the player.
+
+    6) Death
+    - doom == 10 is the only death condition.
+    - End screen is the only closer.
+    - DOOM 10 should appear only on the end screen; normal turn screens must
+      represent doom values in [0–9]. When doom reaches 10 in doom_logic, skip
+      rendering a normal turn screen and go directly to END.
+
+    7) Hidden Metrics
+    - Never render ATTENTION or internal tags.
+    - Only let them influence wording and outcomes indirectly.
+
+    8) Code Block
+    - Each rendered screen lives inside exactly one fenced monospace code block.
+    - Do not keep one code block open across multiple turns.
+    - During gameplay, output no commentary outside the active screen block.
+
+    9) Variation
+    - Avoid one-to-one mapping from choices to identical text across turns or runs.
+    - Rephrase when you detect repetition, especially within a single run.
+    - Avoid using the exact same fallback paragraph on consecutive turns unless
+      necessary for stability.
+
+    10) Choice Integrity
+    - CHOICE_1/2/3 must never be empty.
+    - Each must be shorter than the available width after indentation; if a drafted
+      choice would exceed the right bound of the header once wrapped, shorten it.
+    - If a choice cannot be made to fit reliably, replace it with a short generic
+      safe option as per turn_generator.
+
+    11) Width Guard
+    - Enforce the layout specified in /formatting.txt:
+      - Frame lines start at column 17.
+      - TURN_DESCRIPTION first line uses 18 spaces; continuation lines use 20.
+      - Choice first lines use 17 spaces + "n) "; continuation lines use 20 spaces.
+    - If wrapping would cause any line in TURN_DESCRIPTION or choices to exceed the
+      visible width of the header box, shorten text or apply the fallback
+      paragraph/choice text until the constraint is satisfied.
+
+  /pleb-life/engine/start_trigger.txt
+    Pleb Life — Start Trigger (v1.8.2-COMMERCIAL)
+
+    Purpose:
+    - Make start(run) a reliable ignition word, even when pasted with other text
+      or this directory.
+    - Ensure full state reset on each new run.
+
+    Rules:
+
+    1) Detection
+    - Scan the latest user message for the literal substring start(run).
+    - Matching is case-sensitive; only "start(run)" counts.
+    - Ignore surrounding punctuation or extra content.
+
+    2) Priority
+    - If start(run) is found:
+        - Initialize a new run (see pleb_state_machine Entry).
+        - Reset doom, coins, attention, turn_count, flags, stats, origin_*,
+          event_tags, cause_of_doom, doom_cause_theme, choice_profile,
+          and behavior_summary to their starting values.
+        - Render /ui/title_screen.txt only.
+        - Treat it as the game main menu.
+        - Do NOT echo the directory or add extra explanation.
+
+    3) After Title
+    - Treat the next user message that is exactly "1", "2", or "3" after trimming
+      whitespace as the starting location choice and enter the turn loop.
+    - Do not accept a number embedded inside other text as the starting location
+      choice.
+    - The first turn screen must reflect the selected origin scenario.
+
+    4) Restart
+    - If start(run) appears again at any time, reset state and start a fresh run:
+        - Clear current run completely.
+        - Show /ui/title_screen.txt again.
+
+    5) Coexistence
+    - If the user also adds commentary in the same message as start(run), ignore it
+      for game flow and respond only with the correct screen.
+
+//  ASSETS
+
+  /pleb-life/assets/ingredients/smells_subura.txt
+    // Subura smell signals (short, non-sentence fragments).
+
+    stale_oil
+    yesterday_vegetable_water
+    smoke_from_cracked_braziers
+    sour_wine_on_stone
+    damp_plaster_and_wet_wool
+    latrine_smell_drifting_upstairs
+    cheap_incense_masking_worse
+    cooking_lentils_sticking_to_pot
+    chamberpots_waiting_for_morning
+    sweat_of_too_many_bodies_inside
+    mildew_from_inner_rooms
+    cheap_wine_spilled_in_dirt
+    smoke_from_rooftop_hearths
+    damp_ash_from_last_nights_hearth
+    scorched_wood_from_old_insula_fire
+    half_spoiled_olive_mash
+    runoff_from_public_latrine_channel
+    boiled_lentils_left_overnight
+    stale_bread_ground_into_dust
+    lamp_oil_from_cracked_clay_jugs
+
+  /pleb-life/assets/ingredients/smells_market.txt
+    fresh_cut_meat
+    old_blood_under_new_straw
+    crushed_garlic_and_herbs
+    vinegar_on_warm_stone
+    spilled_fish_brine
+    spice_dust_in_the_air
+    sweat_of_packed_buyers
+    crushed_olives_underfoot
+    sweet_pastry_smell_cut_by_smoke
+    wet_wool_hung_to_dry
+    sharp_ammonia_from_tanners
+    overripe_fruit_splitting_open
+    fresh_fava_beans_split_open
+    must_from_crushed_grapes
+    sheep_tallow_softening_in_sun
+    fermenting_fish_sauce_residue
+    celery_and_leek_piles_wilting
+    bronze_coin_smell_near_moneychanger
+    reek_of_old_leather_goods
+
+  /pleb-life/assets/ingredients/smells_forum.txt
+    dust_on_marble
+    ink_and_wax
+    sun_warmed_stone
+    sweaty_cloaks_in_shade
+    smell_of_ink_and_rushed_wax
+    faint_perfume_from_richer_passers
+    faint_smell_of_ink_drying
+    oil_from_torches_left_from_night
+    dust_from_sandaled_feet
+    chalk_and_worn_leather_straps
+    chalk_and_old_mortar
+    parchment_glue_heating_in_corner
+    bronze_statue_scent_after_rain
+    incense_smoke_from_nearby_shrine
+    warmed_inkpots_left_open
+    polished_armor_oiled_with_wax
+
+  /pleb-life/assets/ingredients/smells_baths.txt
+    olive_oil_and_steam
+    wet_stone_and_brine
+    cheap_oil_rubbed_thin
+    smoke_from_heating_fires
+    sweat_rinsed_not_gone
+    herbed_oils_from_richer_men
+    scraped_skin_and_soap
+    faint_mildew_in_corner_pools
+    burned_wood_from_heating_rooms
+    strong_oils_clinging_to_towels
+    steam_carrying_myrtle_oil
+    strigil_scrapings_sour_trace
+    woodsmoke_from_praefurnium
+    mineral_dust_from_heated_tiles
+    mild_rot_from_wet_reed_mats
+
+  /pleb-life/assets/ingredients/smells_docks.txt
+    fish_guts_and_salt
+    tar_and_wet_wood
+    rope_fibers_and_sweat
+    stale_water_in_cracks
+    spilled_wine_from_crates
+    smoke_from_ship_braziers
+    rot_from_old_nets
+    pitch_from_repaired_hulls
+    sour_beer_near_quayside_tavern
+    wet_clay_jars_opened_for_inspection
+    wet_rush_baskets
+    seaweed_drying_on_stone
+    pitch_fumes_from_boat_repair
+    brine_from_open_amphorae
+    stale_beer_from_quayside_taverns
+
+  /pleb-life/assets/ingredients/sounds_crowd.txt
+    butchers_calling_prices
+    arguments_over_small_coins
+    distant_cart_rattling
+    children_shouting_for_space
+    merchants_barking_competing_offers
+    sailors_swearing_over_cargo
+    neighbors_snapping_at_each_other
+    lictors_staff_rapping_stone
+    vendors_singing_snatches_of_sales_patter
+    temple_bells_echoing_faintly
+    laughter_spilling_from_doorways
+    muffled_argument_behind_shuttered_window
+    orders_barked_at_porters
+    sudden_silence_when_officials_pass
+    fountain_water_covering_quiet_words
+    moneychanger_ringing_test_weights
+    scribes_shuffling_wax_tablets
+    vendors_reciting_lineage_of_goods
+    ferrymen_cursing_tides
+    petitioners_reading_edicts_aloud
+    tavern_laughter_bleeding_into_street
+
+  /pleb-life/assets/ingredients/motions_crowd.txt
+    slow_current_of_bodies
+    sudden_surge_toward_a_voice
+    people_edging_around_a_gap
+    crowd_pressing_in_too_close
+    small_eddy_of_space_around_you
+    line_of_people_shifting_impatiently
+    cluster_breaking_apart_all_at_once
+    children_darting_between_adults
+    workers_bending_under_loads
+    quick_gap_opening_then_sealing_again
+    someone_shouldering_past_without_apology
+    beggars_reaching_out_then_withdrawing
+    freedmen_gathering_for_daily_patrons
+    litigants_waiting_in_small_cluster
+    chorus_of_heads_turning_toward_noise
+    workers_shifting_sacks_of_grain
+    schoolchildren_hurrying_past_in_line
+
+  /pleb-life/assets/ingredients/glances_officials.txt
+    tablet_comes_up_for_a_better_look
+    stylus_pauses_mid_mark
+    lictors_eye_resting_too_long
+    scribe_noting_something_nearby
+    assistant_turning_to_match_your_face
+    bored_official_squinting_your_way
+    clerk_raises_brow_then_looks_away
+    magistrate_scans_crowd_without_smiling
+    guard_glance_skims_your_belt_pouch
+    tax_assessor_marks_something_with_frown
+    aediles_assistant_checks_weight_list
+    clerk_matching_faces_to_registry
+    census_scribe_comparing_height_marks
+    guard_realigning_bundle_of_rod_fasces
+    junior_scribe_testing_tip_of_stylus
+
+  /pleb-life/assets/ingredients/hazards_street.txt
+    slick_patch_of_slop
+    cracked_step_that_catches_heels
+    loose_stone_on_the_stairs
+    cart_wheel_cutting_too_close
+    spilled_water_near_the_baths
+    frayed_rope_stretched_across_path
+    stacked_crates_with_bad_balance
+    broken_tile_near_doorway
+    stray_dog_lying_in_footpath
+    sudden_drop_where_stone_has_sunk
+    laundry_lines_hanging_at_neck_level
+    loose_nail_in_doorframe
+    broken_dolia_storing_water
+    slippery_algae_near_public_fountain
+    loose_roof_tile_fallen_recently
+    spilled_grain_creating_marble_rolling
+    beam_sagging_under_insula_bracing
+
+  /pleb-life/assets/ingredients/tensions_inner.txt
+    stomach_knot_from_debt
+    legs_heavy_from_not_enough_sleep
+    throat_tight_from_swallowed_words
+    head_foggy_from_thin_breakfast
+    shoulders_sore_from_carrying_too_much
+    heart_still_racing_from_last_close_call
+    sense_of_being_one_question_from_trouble
+    nagging_bead_of_sweat_between_shoulders
+    tightness_behind_eyes_from_stress
+    hands_tremble_when_you_hold_still
+    breath_comes_shallow_without_reason
+    jaw_aches_from_clenching
+    dread_of_aedile_fines
+    fear_of_landlord_inspection
+    pulse_quickened_by_past_census_mistake
+    unease_from_unpaid_bread_token_debt
+
+  /pleb-life/assets/ingredients/doom_pressure.txt
+    air_feels_thinner_here
+    backs_press_closer_than_you_like
+    paths_out_look_narrower
+    noise_builds_until_thoughts_blur
+    room_for_error_shrinks
+    every_pause_feels_like_a_choice
+    tide_of_bodies_could_turn_any_way
+    time_feels_thinner_with_each_step
+    faces_blur_into_one_indifferent_wall
+    every_choice_seems_to_close_two_others
+    street_feels_too_narrow_for_whats_coming
+    distance_to_safety_feels_longer_than_before
+    crowd_reacts_to_posted_edict
+    fear_of_collectors_turning_corner
+    movement_stalls_near_tax_checkpoint
+    weight_of_city_orders_pressing_down
+    shouted_commands_up_ahead
+
+  /pleb-life/assets/ingredients/indifference_rome.txt
+    rome_keeps_its_pulse_steady
+    streets_close_over_small_absences
+    ledgers_do_not_mark_names_like_yours
+    stone_remembers_footsteps_not_faces
+    crowds_learn_new_shortcuts_overnight
+    rumors_move_on_faster_than_grief
+    no_one_tracks_where_plebs_disappear
+    city_lights_windows_without_knowing_who_falls
+    tax_rolls_move_on_without_erasing_a_line
+    alleyways_swallow_stories_without_comment
+    festivals_continue_even_as_bodies_vanish
+    games_and_spectacles_drown_quiet_losses
+    edicts_are_posted_then_forgotten
+    magistrates_change_but_patterns_stay
+    census_records_roll_forward_relentlessly
+    shrines_receive_offerings_without_names
+    city_keeps_its_noise_even_at_death
+
+  /pleb-life/assets/ingredients/run_length_modifiers.txt
+    short_run_barely_noticed
+    short_run_blinked_out_quickly
+    medium_run_lingered_in_corners
+    medium_run_wove_through_quite_a_few_days
+    long_run_stayed_on_its_feet_too_long_for_comfort
+    long_run_made_small_waves_then_faded
+    short_run_left_little_trace
+    medium_run_wove_briefly_through_routines
+    long_run_became_background_noise_to_city
+
+  /pleb-life/assets/ingredients/attention_flavor.txt
+    eyes_slide_past_you
+    crowd_absorbs_you_without_comment
+    a_few_glances_hold_a_moment_too_long
+    quiet_conversations_pause_as_you_pass
+    stylus_lifts_when_you_hesitate
+    someone_tracks_you_over_their_tablet
+    you_feel_counted_without_being_named
+    you_feel_weighed_like_cheap_merchandise
+    a_single_pair_of_eyes_follows_too_far
+    silence_spreads_briefly_around_your_name
+    you_move_as_if_spotlight_could_snap_on
+
+  /pleb-life/assets/ingredients/endings_frames.txt
+    // Frames for composing DEATH_TEXT; used with doom_cause_theme
+    // and district. Short signals, not full sentences.
+
+    subura_crowd_trigger_step
+    subura_crowd_stairs_as_throat
+    market_surge_trigger_shout
+    market_surge_carts_and_goats
+    forum_fall_worn_marble_edge
+    forum_fall_columns_and_sky_tilt
+    baths_surge_steam_and_slick_stone
+    baths_surge_benches_turn_to_wave
+    docks_water_rope_snaps_and_slip
+    docks_water_cold_harbor_swallow
+    quiet_fever_small_rented_room
+    quiet_fever_sounds_of_city_outside
+    body_runs_out_of_breath
+    weight_of_others_or_world_is_too_much
+    afterward_work_and_trade_resume
+    afterward_arguments_and_ledgers_continue
+    afterward_city_does_not_mark_the_spot
+    subura_crowd_wall_yields_then_closes
+    market_surge_stall_tables_turn_to_traps
+    forum_fall_hand_slips_on_worn_edge
+    baths_surge_water_and_bodies_confuse_balance
+    docks_water_crowds_on_pier_do_not_see
+    quiet_fever_blanket_heavy_as_rock
+    afterward_only_few_words_spoken_about_it
+    afterward_even_those_words_fade_quickly
+    subura_fall_over_crowded_insula_stair
+    market_surge_shouts_for_space_ignored
+    forum_fall_hand_slips_on_polished_step
+    baths_surge_floor_slick_from_oil
+    docks_water_drag_pull_of_current
+    quiet_fever_low_lamp_burning_out
+    afterward_edicts_continue_as_planned
+    afterward_grain_lines_unchanged
+    afterward_market_prices_shift_hours_later
+
+  /pleb-life/assets/ingredients/social_currents.txt
+    whispers_about_new_aedile_edict
+    rumors_of_grain_ships_delayed
+    talk_of_tax_collectors_making_rounds
+    gossip_about_insula_collapse_last_week
+    murmurs_about_upcoming_festival
+    quiet_notes_on_soldiers_seen_nearby
+    complaints_about_bread_weight
+    suspicion_over_who_controls_a_stall
+
+  /pleb-life/assets/ingredients/objects_environmental.txt
+    broken_fibula_near_doorway
+    discarded_strigil_scraping
+    cracked_oil_lamp_blackened
+    tessera_ludica_gambling_token
+    bronze_weight_for_scales_misplaced
+    terra_sigillata_shard_with_stamp
+    curse_tablet_scratched_in_lead
+    amphora_handle_marked_with_province
+    knotted_cord_for_measuring_rents
+    worn_wax_tablet_half_scraped_clean
+    cheap_lararium_charm_dropped
+    ticket_token_for_bread_distribution
+
+  /pleb-life/assets/ingredients/official_behavior.txt
+    official_scrapes_wax_to_erase_note
+    assistant_unrolls_small_papyrus
+    tax_collector_checks_coin_edge_wear
+    lictor_adjusts_fasces_wrappings
+    clerk_counts_tokens_for_distribution
+    herald_practices_short_proclamation
+
+  /pleb-life/assets/ingredients/district_subura.txt
+    fire_watchman_half_asleep
+    stair_risers_rebuilt_with_mismatched_stone
+    wine_shop_sign_fading_on_plaster
+    alley_shrine_offering_cup_empty
+    laundry_lines_hung_across_alleyways
+
+  /pleb-life/assets/ingredients/district_market.txt
+    guild_mark_chiseled_into_post
+    fishmonger_scraping_block_grooves
+    bronze_weight_with_imperial_stamp
+    butcher_block_scored_from_long_use
+    tally_rods_showing_recent_sales
+
+  /pleb-life/assets/ingredients/district_forum.txt
+    rostrum_scars_from_past_debates
+    statue_base_with_new_inscription
+    law_tablet_with_fresh_wax_smudge
+    rhetoric_school_children_reciting
+    advocates_pacing_measure_steps
+
+  /pleb-life/assets/ingredients/district_baths.txt
+    strigil_bucket_filled_with_oily_water
+    hypocaust_grate_trembling_underheat
+    towels_drying_near_laconicum
+    attendant_stool_worn_smooth
+    unused_scent_oil_bottle_missing_stop
+
+  /pleb-life/assets/ingredients/district_docks.txt
+    amphorae_with_africa_stamp
+    grain_dust_coating_everything
+    tally_scribe_tracking_crates
+    ferrymen_tying_complex_knots
+    rope_splice_marked_by_old_tar
+
+  /pleb-life/assets/ingredients/economic_signals.txt
+    grain_token_traded_in_hurry
+    debtor_haggling_over_weight
+    baker_adjusting_bread_stamps
+    merchant_wiping_imperial_seal_on_goods
+    coin_clip_detected_by_moneychanger
+    taverner_extending_credit_reluctantly
+
+  /pleb-life/assets/starting_scenarios.txt
+    // Starting Scenario System (SSS-9)
+    // 3 origin troubles per title-screen start option.
+
+    [SUBURA]
+    id: subura_debt
+    summary: He spotted you slipping home last night, and he wants what you owe.
+
+    [SUBURA]
+    id: subura_rent
+    summary: Your landlord is done waiting and plans to find you today.
+
+    [SUBURA]
+    id: subura_theft
+    summary: A neighbor claims you stole from him and is stirring up trouble.
+
+    [MARKET]
+    id: market_delivery
+    summary: You delivered the package to the wrong stall, and word is spreading.
+
+    [MARKET]
+    id: market_shortchange
+    summary: A customer insists you cheated them—loudly enough to matter.
+
+    [MARKET]
+    id: market_daughter
+    summary: Her father thinks you crossed a line, and he’s looking for you.
+
+    [WHEREVER]
+    id: roam_witness
+    summary: You saw something you shouldn’t have, and someone saw you see it.
+
+    [WHEREVER]
+    id: roam_territory
+    summary: You wandered through the wrong alley, and they noticed.
+
+    [WHEREVER]
+    id: roam_official
+    summary: You mouthed off last night, and the official didn’t forget.
+
+  /pleb-life/assets/doom_causes_local.txt
+    // Cause-of-doom labels; closer_logic maps themes + districts to these.
+
+    Trampled in a market surge
+    Trampled in a bathhouse surge
+    Crushed in a crowd near the Forum steps
+    Fell from worn Subura stairs
+    Fell from the Forum steps
+    Swept under in a harbor accident
+    Pinned in a tenement crush
+    Lost quietly to fever in a back room
+
+  /pleb-life/assets/coin_events.txt
+    small_gain
+    medium_gain
+    big_gain
+    small_loss
+    medium_loss
+    big_loss
+    neutral
+    windfall
+
+  /pleb-life/assets/trust_events.txt
+    trusted_stranger_and_won
+    trusted_stranger_and_lost
+    refused_help
+    ignored_warning
+    followed_bad_advice
+    accepted_help_from_rough_guildsman
+    trusted_cloak_seller_with_bad_reputation
+    ignored_whisper_about_tax_patrol
+
+  /pleb-life/assets/pickpocket_events.txt
+    pocket_watched
+    pocket_cut_clean
+    caught_the_thief
+    never_saw_what_you_lost
+    shared_warning_about_thieves
+    noticed_hand_then_lost_sight
+    rumor_of_new_thieves_in_district
+    hand_slipped_in_during_market_surge
+    thief_watching_your_pouch_weight
+    warning_shared_by_retired_legionary
